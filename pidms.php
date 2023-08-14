@@ -25,10 +25,9 @@
         <div class="col-12">
             <textarea name="resKey" id="resKey" cols="30" rows="10" class="form-control" readonly></textarea>
         </div>
-        <!-- <div class="pt-3">
-            <span><i class="bi bi-clock-fill"></i> Speed: </span>
-            <span id="speedTimer"></span>
-        </div> -->
+        <div class="pt-3">
+
+        </div>
     </div>
     <?php require_once 'template/footer.php'; ?>
 </div>
@@ -37,21 +36,30 @@
 
         $('#checkBtn').on('click', function(event) {
             event.preventDefault();
+            $('#resKey').text('');
+            $('#checkBtn').addClass('disabled');
             var productKey = $('#prodKey').val().trim();
             if (productKey != '') {
-                $('#checkBtn').addClass('disabled');
-                $('#resKey').text('');
-                var url = 'https://kichhoat24h.com/user-api/check-key?keys=' + productKey + '&token=VLbuvBpvUW1XZUJaay8vbDBiMGc3Yzg3Q1AvSWlCeGkrQmF3MGZsMUdkRVNieTFKaz0&mode=0';
-                $.get(url, function(data) {
-                    console.log(data.data);
-                    var res = '';
-                    for (var i = 0; i < data.data.length; i++) {
-                        var result = data.data[i].response_message;
-                        $('#resKey').text(res += result);
+
+                $.ajax({
+                    type: "POST",
+                    url: "fetch.php",
+                    data: {
+                        'submit': true,
+                        'key': productKey
+                    },
+                    success: function(response) {
+                        var jdata = JSON.parse(response);
+                        // console.log(jdata);
+                        var res = '';
+                        for (var i = 0; i < jdata.data.length; i++) {
+                            var result = jdata.data[i].response_message;
+                            $('#resKey').text(res += result);
+                        }
+                        $('#checkBtn').removeClass('disabled');
+                        var sound = $('#notify')[0];
+                        sound.play();
                     }
-                    $('#checkBtn').removeClass('disabled');
-                    var sound = $('#notify')[0];
-                    sound.play();
                 });
 
             } else {
