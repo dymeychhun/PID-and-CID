@@ -20,15 +20,15 @@
                 </div> -->
         </div>
         <div class="col-12 d-flex justify-content-center my-3">
-            <button class="btn btn-danger" id="checkBtn"><span id="statusIcon">Check Data</span></button>
+            <button class="btn btn-danger" id="checkBtn"><span id="statusIcon">Check Key</span></button>
         </div>
         <div class="col-12">
             <textarea name="resKey" id="resKey" cols="30" rows="10" class="form-control" readonly></textarea>
         </div>
-        <div class="pt-3">
+        <!-- <div class="pt-3">
             <span><i class="bi bi-clock-fill"></i> Speed: </span>
             <span id="speedTimer"></span>
-        </div>
+        </div> -->
     </div>
     <?php require_once 'template/footer.php'; ?>
 </div>
@@ -59,33 +59,6 @@
             }
 
         });
-
-        // Prevent user input invalid format
-        $("#prodKey").on("input", function() {
-            var inputText = $(this).val().toUpperCase();
-            var cleanedInput = inputText.replace(/[^A-Z0-9-]/g, "");
-
-            if (cleanedInput.length > 0 && !isValidFormat(cleanedInput)) {
-                $("#error").text("Invalid format. Format should be XXXXX-XXXXX-XXXXX-XXXXX-XXXXX.");
-            } else {
-                $("#error").text("");
-            }
-
-            var formattedInput = formatInput(cleanedInput);
-            $(this).val(formattedInput);
-        });
-
-        function isValidFormat(input) {
-            var regex = /^[A-Z0-9]{5}(-[A-Z0-9]{5}){4}$/;
-            return regex.test(input);
-        }
-
-        function formatInput(input) {
-            var formatted = input.replace(/-/g, "");
-            formatted = formatted.replace(/(.{5})/g, "$1-");
-            return formatted.slice(0, -1);
-        }
-
 
     });
 </script>
